@@ -48,24 +48,7 @@ RUN apt-get update && \
 # Wait For It
 RUN curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > /usr/local/bin/wait-for-it.sh && \
     chmod +x /usr/local/bin/wait-for-it.sh
-# create an unprivileged user
-ENV BUNDLE_PATH="/bundle"
-RUN useradd -m rails && \
-    mkdir /app && \
-    mkdir /bundle && \
-    chown -R rails:rails -Rv /app /bundle
-WORKDIR /app
-COPY --chown=rails:rails Gemfile* /app/
-COPY --chown=rails:rails local_gems /app/local_gems
-RUN bundle install --no-cache -j $(nproc) --retry 5 && \
-    rm -rf /bundle/bundler/gems/rails-e17e25cd23e8/.git && \
-    rm -rf /bundle/cache/
-COPY --chown=rails:rails . .
-WORKDIR /app/spec
-COPY spec/package.json ./package.json
-COPY spec/package-lock.json ./package-lock.json
-RUN npm install --quiet
-WORKDIR /app
+
 # setup AppVersionFinder
 ARG BUILDKITE_BRANCH
 ARG BUILDKITE_COMMIT
@@ -79,5 +62,3 @@ ENV BUILDKITE_BRANCH=$BUILDKITE_BRANCH \
 ENV GEM_HOME=/workspace/.rvm
 
 USER gitpod
-
-CMD echo "Nothing to run"
