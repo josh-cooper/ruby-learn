@@ -7,8 +7,7 @@ FROM ubuntu:16.04
 # More information: https://www.gitpod.io/docs/config-docker/
 
 ### base ###
-RUN yes | unminimize \
-    && apt-get install -yq \
+RUN apt-get install -yq \
         zip \
         unzip \
         bash-completion \
