@@ -26,6 +26,7 @@ RUN apt-get update && \
       mysql-client \
       python3-setuptools \
       python3-pip \
+      sqlite3 \
       zlib1g-dev && \
     apt-get clean && \
     curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
